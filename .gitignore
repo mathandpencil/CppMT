@@ -1,1 +1,6 @@
+cmake_install.cmake
+.DS_Store
+CMakeCache.txt
+CMakeFiles/*
+python/build
 cmt
