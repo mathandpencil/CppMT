@@ -10,7 +10,6 @@
             "../Matcher.h", 
             "../Tracker.h", 
             "../common.h", 
-            "../fastcluster/fastcluster.h", 
             "/usr/local/Cellar/opencv/2.4.9/include/opencv2/core/core.hpp"
         ], 
         "extra_link_args": [
@@ -296,7 +295,6 @@ static CYTHON_INLINE float __PYX_NAN() {
 #include "typeinfo"
 #include "opencv2/core/core.hpp"
 #include "common.h"
-#include "fastcluster/fastcluster.h"
 #include "Consensus.h"
 #include "Tracker.h"
 #include "Matcher.h"
@@ -513,11 +511,20 @@ static const char *__pyx_f[] = {
   "cmt_tracker.pyx",
 };
 
+/* "cmt_tracker.pyx":3
+ * from libcpp.vector cimport vector
+ * 
+ * ctypedef int t_index;             # <<<<<<<<<<<<<<
+ * 
+ * cdef extern from "opencv2/core/core.hpp" namespace "cv":
+ */
+typedef int __pyx_t_11cmt_tracker_t_index;
+
 /*--- Type declarations ---*/
 struct __pyx_obj_11cmt_tracker_PyCMT;
 
-/* "cmt_tracker.pyx":66
- *         void helloworld()
+/* "cmt_tracker.pyx":74
+ * 
  * 
  * cdef class PyCMT:             # <<<<<<<<<<<<<<
  *     cdef CMT *thisptr
@@ -597,6 +604,33 @@ static void __Pyx_RaiseArgtupleInvalid(const char* func_name, int exact,
 
 static CYTHON_INLINE int __Pyx_CheckKeywordStrings(PyObject *kwdict, const char* function_name, int kw_allowed);
 
+#if CYTHON_COMPILING_IN_CPYTHON
+static CYTHON_INLINE PyObject* __Pyx_PyObject_GetAttrStr(PyObject* obj, PyObject* attr_name) {
+    PyTypeObject* tp = Py_TYPE(obj);
+    if (likely(tp->tp_getattro))
+        return tp->tp_getattro(obj, attr_name);
+#if PY_MAJOR_VERSION < 3
+    if (likely(tp->tp_getattr))
+        return tp->tp_getattr(obj, PyString_AS_STRING(attr_name));
+#endif
+    return PyObject_GetAttr(obj, attr_name);
+}
+#else
+#define __Pyx_PyObject_GetAttrStr(o,n) PyObject_GetAttr(o,n)
+#endif
+
+#if CYTHON_COMPILING_IN_CPYTHON
+static CYTHON_INLINE PyObject* __Pyx_PyObject_Call(PyObject *func, PyObject *arg, PyObject *kw);
+#else
+#define __Pyx_PyObject_Call(func, arg, kw) PyObject_Call(func, arg, kw)
+#endif
+
+#if CYTHON_COMPILING_IN_CPYTHON
+static CYTHON_INLINE PyObject* __Pyx_PyObject_CallMethO(PyObject *func, PyObject *arg);
+#endif
+
+static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObject *arg);
+
 typedef struct {
     int code_line;
     PyCodeObject* code_object;
@@ -633,15 +667,20 @@ static PyTypeObject *__pyx_ptype_11cmt_tracker_PyCMT = 0;
 int __pyx_module_is_main_cmt_tracker = 0;
 
 /* Implementation of 'cmt_tracker' */
+static char __pyx_k_ptr[] = "ptr";
 static char __pyx_k_main[] = "__main__";
 static char __pyx_k_test[] = "__test__";
+static char __pyx_k_processFrame[] = "processFrame";
 static PyObject *__pyx_n_s_main;
+static PyObject *__pyx_n_s_processFrame;
+static PyObject *__pyx_n_s_ptr;
 static PyObject *__pyx_n_s_test;
 static int __pyx_pf_11cmt_tracker_5PyCMT___cinit__(struct __pyx_obj_11cmt_tracker_PyCMT *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_11cmt_tracker_5PyCMT_2helloworld(struct __pyx_obj_11cmt_tracker_PyCMT *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_11cmt_tracker_5PyCMT_4processFrame(struct __pyx_obj_11cmt_tracker_PyCMT *__pyx_v_self, PyObject *__pyx_v_im_gray); /* proto */
 static PyObject *__pyx_tp_new_11cmt_tracker_PyCMT(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 
-/* "cmt_tracker.pyx":69
+/* "cmt_tracker.pyx":77
  *     cdef CMT *thisptr
  * 
  *     def __cinit__(self):             # <<<<<<<<<<<<<<
@@ -670,7 +709,7 @@ static int __pyx_pf_11cmt_tracker_5PyCMT___cinit__(struct __pyx_obj_11cmt_tracke
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__cinit__", 0);
 
-  /* "cmt_tracker.pyx":70
+  /* "cmt_tracker.pyx":78
  * 
  *     def __cinit__(self):
  *         self.thisptr = new CMT()             # <<<<<<<<<<<<<<
@@ -679,7 +718,7 @@ static int __pyx_pf_11cmt_tracker_5PyCMT___cinit__(struct __pyx_obj_11cmt_tracke
  */
   __pyx_v_self->thisptr = new cmt::CMT();
 
-  /* "cmt_tracker.pyx":69
+  /* "cmt_tracker.pyx":77
  *     cdef CMT *thisptr
  * 
  *     def __cinit__(self):             # <<<<<<<<<<<<<<
@@ -693,11 +732,11 @@ static int __pyx_pf_11cmt_tracker_5PyCMT___cinit__(struct __pyx_obj_11cmt_tracke
   return __pyx_r;
 }
 
-/* "cmt_tracker.pyx":72
+/* "cmt_tracker.pyx":80
  *         self.thisptr = new CMT()
  * 
  *     def helloworld(self):             # <<<<<<<<<<<<<<
- *         self.thisptr.helloworld()
+ *         return self.thisptr.helloworld()
  * 
  */
 
@@ -717,27 +756,137 @@ static PyObject *__pyx_pw_11cmt_tracker_5PyCMT_3helloworld(PyObject *__pyx_v_sel
 static PyObject *__pyx_pf_11cmt_tracker_5PyCMT_2helloworld(struct __pyx_obj_11cmt_tracker_PyCMT *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("helloworld", 0);
 
-  /* "cmt_tracker.pyx":73
+  /* "cmt_tracker.pyx":81
  * 
  *     def helloworld(self):
- *         self.thisptr.helloworld()             # <<<<<<<<<<<<<<
+ *         return self.thisptr.helloworld()             # <<<<<<<<<<<<<<
  * 
- * # cdef extern from "Rectangle.h" namespace "shapes":
+ *     # def initialize(im_gray, rect):
  */
-  __pyx_v_self->thisptr->helloworld();
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __Pyx_void_to_None(__pyx_v_self->thisptr->helloworld()); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 81; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
 
-  /* "cmt_tracker.pyx":72
+  /* "cmt_tracker.pyx":80
  *         self.thisptr = new CMT()
  * 
  *     def helloworld(self):             # <<<<<<<<<<<<<<
- *         self.thisptr.helloworld()
+ *         return self.thisptr.helloworld()
  * 
  */
 
   /* function exit code */
-  __pyx_r = Py_None; __Pyx_INCREF(Py_None);
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("cmt_tracker.PyCMT.helloworld", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "cmt_tracker.pyx":87
+ * 
+ * 
+ *     def processFrame(self, im_gray):             # <<<<<<<<<<<<<<
+ *         return self.ptr.processFrame(im_gray)
+ * 
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_11cmt_tracker_5PyCMT_5processFrame(PyObject *__pyx_v_self, PyObject *__pyx_v_im_gray); /*proto*/
+static PyObject *__pyx_pw_11cmt_tracker_5PyCMT_5processFrame(PyObject *__pyx_v_self, PyObject *__pyx_v_im_gray) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("processFrame (wrapper)", 0);
+  __pyx_r = __pyx_pf_11cmt_tracker_5PyCMT_4processFrame(((struct __pyx_obj_11cmt_tracker_PyCMT *)__pyx_v_self), ((PyObject *)__pyx_v_im_gray));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_11cmt_tracker_5PyCMT_4processFrame(struct __pyx_obj_11cmt_tracker_PyCMT *__pyx_v_self, PyObject *__pyx_v_im_gray) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
+  PyObject *__pyx_t_4 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("processFrame", 0);
+
+  /* "cmt_tracker.pyx":88
+ * 
+ *     def processFrame(self, im_gray):
+ *         return self.ptr.processFrame(im_gray)             # <<<<<<<<<<<<<<
+ * 
+ * # cdef extern from "Rectangle.h" namespace "shapes":
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_ptr); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 88; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_processFrame); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 88; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_2 = NULL;
+  if (CYTHON_COMPILING_IN_CPYTHON && likely(PyMethod_Check(__pyx_t_3))) {
+    __pyx_t_2 = PyMethod_GET_SELF(__pyx_t_3);
+    if (likely(__pyx_t_2)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+      __Pyx_INCREF(__pyx_t_2);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_3, function);
+    }
+  }
+  if (!__pyx_t_2) {
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_im_gray); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 88; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_1);
+  } else {
+    __pyx_t_4 = PyTuple_New(1+1); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 88; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_4);
+    __Pyx_GIVEREF(__pyx_t_2); PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_2); __pyx_t_2 = NULL;
+    __Pyx_INCREF(__pyx_v_im_gray);
+    __Pyx_GIVEREF(__pyx_v_im_gray);
+    PyTuple_SET_ITEM(__pyx_t_4, 0+1, __pyx_v_im_gray);
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_4, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 88; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  }
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "cmt_tracker.pyx":87
+ * 
+ * 
+ *     def processFrame(self, im_gray):             # <<<<<<<<<<<<<<
+ *         return self.ptr.processFrame(im_gray)
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_AddTraceback("cmt_tracker.PyCMT.processFrame", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
@@ -768,6 +917,7 @@ static void __pyx_tp_dealloc_11cmt_tracker_PyCMT(PyObject *o) {
 
 static PyMethodDef __pyx_methods_11cmt_tracker_PyCMT[] = {
   {"helloworld", (PyCFunction)__pyx_pw_11cmt_tracker_5PyCMT_3helloworld, METH_NOARGS, 0},
+  {"processFrame", (PyCFunction)__pyx_pw_11cmt_tracker_5PyCMT_5processFrame, METH_O, 0},
   {0, 0, 0, 0}
 };
 
@@ -853,6 +1003,8 @@ static struct PyModuleDef __pyx_moduledef = {
 
 static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
+  {&__pyx_n_s_processFrame, __pyx_k_processFrame, sizeof(__pyx_k_processFrame), 0, 0, 1, 1},
+  {&__pyx_n_s_ptr, __pyx_k_ptr, sizeof(__pyx_k_ptr), 0, 0, 1, 1},
   {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
   {0, 0, 0, 0, 0, 0, 0}
 };
@@ -960,9 +1112,9 @@ PyMODINIT_FUNC PyInit_cmt_tracker(void)
   /*--- Variable export code ---*/
   /*--- Function export code ---*/
   /*--- Type init code ---*/
-  if (PyType_Ready(&__pyx_type_11cmt_tracker_PyCMT) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 66; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyType_Ready(&__pyx_type_11cmt_tracker_PyCMT) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 74; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_type_11cmt_tracker_PyCMT.tp_print = 0;
-  if (PyObject_SetAttrString(__pyx_m, "PyCMT", (PyObject *)&__pyx_type_11cmt_tracker_PyCMT) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 66; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyObject_SetAttrString(__pyx_m, "PyCMT", (PyObject *)&__pyx_type_11cmt_tracker_PyCMT) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 74; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_ptype_11cmt_tracker_PyCMT = &__pyx_type_11cmt_tracker_PyCMT;
   /*--- Type import code ---*/
   /*--- Variable import code ---*/
@@ -975,7 +1127,7 @@ PyMODINIT_FUNC PyInit_cmt_tracker(void)
   /* "cmt_tracker.pyx":1
  * from libcpp.vector cimport vector             # <<<<<<<<<<<<<<
  * 
- * 
+ * ctypedef int t_index;
  */
   __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
@@ -1084,6 +1236,78 @@ invalid_keyword:
     #endif
     return 0;
 }
+
+#if CYTHON_COMPILING_IN_CPYTHON
+static CYTHON_INLINE PyObject* __Pyx_PyObject_Call(PyObject *func, PyObject *arg, PyObject *kw) {
+    PyObject *result;
+    ternaryfunc call = func->ob_type->tp_call;
+    if (unlikely(!call))
+        return PyObject_Call(func, arg, kw);
+    if (unlikely(Py_EnterRecursiveCall((char*)" while calling a Python object")))
+        return NULL;
+    result = (*call)(func, arg, kw);
+    Py_LeaveRecursiveCall();
+    if (unlikely(!result) && unlikely(!PyErr_Occurred())) {
+        PyErr_SetString(
+            PyExc_SystemError,
+            "NULL result without error in PyObject_Call");
+    }
+    return result;
+}
+#endif
+
+#if CYTHON_COMPILING_IN_CPYTHON
+static CYTHON_INLINE PyObject* __Pyx_PyObject_CallMethO(PyObject *func, PyObject *arg) {
+    PyObject *self, *result;
+    PyCFunction cfunc;
+    cfunc = PyCFunction_GET_FUNCTION(func);
+    self = PyCFunction_GET_SELF(func);
+    if (unlikely(Py_EnterRecursiveCall((char*)" while calling a Python object")))
+        return NULL;
+    result = cfunc(self, arg);
+    Py_LeaveRecursiveCall();
+    if (unlikely(!result) && unlikely(!PyErr_Occurred())) {
+        PyErr_SetString(
+            PyExc_SystemError,
+            "NULL result without error in PyObject_Call");
+    }
+    return result;
+}
+#endif
+
+#if CYTHON_COMPILING_IN_CPYTHON
+static PyObject* __Pyx__PyObject_CallOneArg(PyObject *func, PyObject *arg) {
+    PyObject *result;
+    PyObject *args = PyTuple_New(1);
+    if (unlikely(!args)) return NULL;
+    Py_INCREF(arg);
+    PyTuple_SET_ITEM(args, 0, arg);
+    result = __Pyx_PyObject_Call(func, args, NULL);
+    Py_DECREF(args);
+    return result;
+}
+static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObject *arg) {
+#ifdef __Pyx_CyFunction_USED
+    if (likely(PyCFunction_Check(func) || PyObject_TypeCheck(func, __pyx_CyFunctionType))) {
+#else
+    if (likely(PyCFunction_Check(func))) {
+#endif
+        if (likely(PyCFunction_GET_FLAGS(func) & METH_O)) {
+            return __Pyx_PyObject_CallMethO(func, arg);
+        }
+    }
+    return __Pyx__PyObject_CallOneArg(func, arg);
+}
+#else
+static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObject *arg) {
+    PyObject *result;
+    PyObject *args = PyTuple_Pack(1, arg);
+    if (unlikely(!args)) return NULL;
+    result = __Pyx_PyObject_Call(func, args, NULL);
+    Py_DECREF(args);
+    return result;
+}
+#endif
 
 static int __pyx_bisect_code_objects(__Pyx_CodeObjectCacheEntry* entries, int count, int code_line) {
     int start = 0, mid = 0, end = count - 1;

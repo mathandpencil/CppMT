@@ -1,5 +1,6 @@
 from libcpp.vector cimport vector
 
+ctypedef int t_index;
 
 cdef extern from "opencv2/core/core.hpp" namespace "cv":
   cdef cppclass Mat:
@@ -9,7 +10,11 @@ cdef extern from "opencv2/core/core.hpp" namespace "cv":
 
 cdef extern from "opencv2/core/core.hpp" namespace "cv":
     cdef cppclass Point2f:
-      Point2f() except +
+        Point2f() except +
+
+cdef extern from "opencv2/core/core.hpp" namespace "cv":
+    cdef cppclass Rect:
+        Rect() except +
 
 cdef extern from "opencv2/core/core.hpp" namespace "cv":
   cdef cppclass KeyPoint:
@@ -19,9 +24,9 @@ cdef extern from "opencv2/core/core.hpp" namespace "cv":
 cdef extern from "common.h" namespace "cmt":
     cdef Point2f rotate(const Point2f v, const float angle);
 
-cdef extern from "fastcluster/fastcluster.h":
-    cdef cppclass cluster_result:
-        cluster_result()
+# cdef extern from "fastcluster/fastcluster.h":
+#     cdef cppclass cluster_result:
+#         cluster_result(const t_index size)
     
 cdef extern from "Consensus.h" namespace "cmt":
   cdef cppclass Consensus:
@@ -62,6 +67,9 @@ cdef extern from "CMT.h" namespace "cmt":
     cdef cppclass CMT:
         CMT()
         void helloworld()
+        void processFrame(Mat im_gray)
+        #void initialize(const Mat im_gray, const Rect rect)
+        
 
 cdef class PyCMT:
     cdef CMT *thisptr 
@@ -70,7 +78,14 @@ cdef class PyCMT:
         self.thisptr = new CMT()   
     
     def helloworld(self):
-        self.thisptr.helloworld()
+        return self.thisptr.helloworld()
+    
+    # def initialize(im_gray, rect):
+    #     return self.ptr.processFrame(im_gray)
+    
+
+    def processFrame(self, im_gray):
+        return self.ptr.processFrame(im_gray)
 
 # cdef extern from "Rectangle.h" namespace "shapes":
 #     cdef cppclass Rectangle:
