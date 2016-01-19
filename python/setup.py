@@ -19,7 +19,15 @@ INCLUDE_DIRS = [
 setup(
   cmdclass = {'build_ext': build_ext },
   ext_modules = cythonize(Extension("cmt_tracker",
-    sources = ["cmt_tracker.pyx", "../CMT.cpp"],
+    sources = [
+        "cmt_tracker.pyx", 
+        "../CMT.cpp", 
+        "../Fusion.cpp",
+        "../common.cpp", 
+        "../Tracker.cpp",
+        "../Consensus.cpp",
+        "../fastcluster/fastcluster.cpp",
+        "../Matcher.cpp"],
     language = "c++",
     include_dirs=INCLUDE_DIRS,
     extra_link_args=libs

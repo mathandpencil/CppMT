@@ -5,6 +5,12 @@
     "distutils": {
         "depends": [
             "../CMT.h", 
+            "../Consensus.h", 
+            "../Fusion.h", 
+            "../Matcher.h", 
+            "../Tracker.h", 
+            "../common.h", 
+            "../fastcluster/fastcluster.h", 
             "/usr/local/Cellar/opencv/2.4.9/include/opencv2/core/core.hpp"
         ], 
         "extra_link_args": [
@@ -283,11 +289,18 @@ static CYTHON_INLINE float __PYX_NAN() {
 
 #define __PYX_HAVE__cmt_tracker
 #define __PYX_HAVE_API__cmt_tracker
-#include "opencv2/core/core.hpp"
+#include <vector>
 #include "ios"
 #include "new"
 #include "stdexcept"
 #include "typeinfo"
+#include "opencv2/core/core.hpp"
+#include "common.h"
+#include "fastcluster/fastcluster.h"
+#include "Consensus.h"
+#include "Tracker.h"
+#include "Matcher.h"
+#include "Fusion.h"
 #include "CMT.h"
 #ifdef _OPENMP
 #include <omp.h>
@@ -503,7 +516,7 @@ static const char *__pyx_f[] = {
 /*--- Type declarations ---*/
 struct __pyx_obj_11cmt_tracker_PyCMT;
 
-/* "cmt_tracker.pyx":14
+/* "cmt_tracker.pyx":66
  *         void helloworld()
  * 
  * cdef class PyCMT:             # <<<<<<<<<<<<<<
@@ -612,6 +625,8 @@ static int __Pyx_check_binary_version(void);
 static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
 
+/* Module declarations from 'libcpp.vector' */
+
 /* Module declarations from 'cmt_tracker' */
 static PyTypeObject *__pyx_ptype_11cmt_tracker_PyCMT = 0;
 #define __Pyx_MODULE_NAME "cmt_tracker"
@@ -626,7 +641,7 @@ static int __pyx_pf_11cmt_tracker_5PyCMT___cinit__(struct __pyx_obj_11cmt_tracke
 static PyObject *__pyx_pf_11cmt_tracker_5PyCMT_2helloworld(struct __pyx_obj_11cmt_tracker_PyCMT *__pyx_v_self); /* proto */
 static PyObject *__pyx_tp_new_11cmt_tracker_PyCMT(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 
-/* "cmt_tracker.pyx":17
+/* "cmt_tracker.pyx":69
  *     cdef CMT *thisptr
  * 
  *     def __cinit__(self):             # <<<<<<<<<<<<<<
@@ -655,7 +670,7 @@ static int __pyx_pf_11cmt_tracker_5PyCMT___cinit__(struct __pyx_obj_11cmt_tracke
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__cinit__", 0);
 
-  /* "cmt_tracker.pyx":18
+  /* "cmt_tracker.pyx":70
  * 
  *     def __cinit__(self):
  *         self.thisptr = new CMT()             # <<<<<<<<<<<<<<
@@ -664,7 +679,7 @@ static int __pyx_pf_11cmt_tracker_5PyCMT___cinit__(struct __pyx_obj_11cmt_tracke
  */
   __pyx_v_self->thisptr = new cmt::CMT();
 
-  /* "cmt_tracker.pyx":17
+  /* "cmt_tracker.pyx":69
  *     cdef CMT *thisptr
  * 
  *     def __cinit__(self):             # <<<<<<<<<<<<<<
@@ -678,7 +693,7 @@ static int __pyx_pf_11cmt_tracker_5PyCMT___cinit__(struct __pyx_obj_11cmt_tracke
   return __pyx_r;
 }
 
-/* "cmt_tracker.pyx":20
+/* "cmt_tracker.pyx":72
  *         self.thisptr = new CMT()
  * 
  *     def helloworld(self):             # <<<<<<<<<<<<<<
@@ -704,7 +719,7 @@ static PyObject *__pyx_pf_11cmt_tracker_5PyCMT_2helloworld(struct __pyx_obj_11cm
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("helloworld", 0);
 
-  /* "cmt_tracker.pyx":21
+  /* "cmt_tracker.pyx":73
  * 
  *     def helloworld(self):
  *         self.thisptr.helloworld()             # <<<<<<<<<<<<<<
@@ -713,7 +728,7 @@ static PyObject *__pyx_pf_11cmt_tracker_5PyCMT_2helloworld(struct __pyx_obj_11cm
  */
   __pyx_v_self->thisptr->helloworld();
 
-  /* "cmt_tracker.pyx":20
+  /* "cmt_tracker.pyx":72
  *         self.thisptr = new CMT()
  * 
  *     def helloworld(self):             # <<<<<<<<<<<<<<
@@ -945,9 +960,9 @@ PyMODINIT_FUNC PyInit_cmt_tracker(void)
   /*--- Variable export code ---*/
   /*--- Function export code ---*/
   /*--- Type init code ---*/
-  if (PyType_Ready(&__pyx_type_11cmt_tracker_PyCMT) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 14; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyType_Ready(&__pyx_type_11cmt_tracker_PyCMT) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 66; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_type_11cmt_tracker_PyCMT.tp_print = 0;
-  if (PyObject_SetAttrString(__pyx_m, "PyCMT", (PyObject *)&__pyx_type_11cmt_tracker_PyCMT) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 14; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyObject_SetAttrString(__pyx_m, "PyCMT", (PyObject *)&__pyx_type_11cmt_tracker_PyCMT) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 66; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_ptype_11cmt_tracker_PyCMT = &__pyx_type_11cmt_tracker_PyCMT;
   /*--- Type import code ---*/
   /*--- Variable import code ---*/
@@ -958,9 +973,9 @@ PyMODINIT_FUNC PyInit_cmt_tracker(void)
   #endif
 
   /* "cmt_tracker.pyx":1
- * # rectangle.pyx             # <<<<<<<<<<<<<<
+ * from libcpp.vector cimport vector             # <<<<<<<<<<<<<<
  * 
- * cdef extern from "opencv2/core/core.hpp" namespace "cv":
+ * 
  */
   __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
