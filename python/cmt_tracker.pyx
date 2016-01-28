@@ -65,21 +65,27 @@ cdef extern from "Fusion.h" namespace "cmt":
 cdef extern from "CMT.h" namespace "cmt":
     cdef cppclass CMT:
         CMT()
-        void helloworld()
         void processFrame(Mat)
-        #void initialize(Mat im_gray, Rect rect)
+        void initialize(Mat im_gray, Rect rect)
+ 
+cdef class PyMat:
+    cdef Mat Mat
+    # def __cinit__(self, x , y ,z):
+    #     self.thisptr = new Mat()
+cdef class PyRect:
+    cdef Rect Rect
         
 cdef class PyCMT:
+    
     cdef CMT *thisptr 
     
     def __cinit__(self):
         self.thisptr = new CMT()   
+        
+    def processFrame(self, PyMat im_gray):
+        self.thisptr.processFrame(im_gray.Mat)
+            
+    def initialize(self, PyMat  im_gray, PyRect rect):
+        self.thisptr.initialize(im_gray.Mat, rect.Rect)
     
-    def helloworld(self):
-        self.thisptr.helloworld()
-    
-    # def initialize(self, im_gray, rect):
-    #     self.thisptr.processFrame(im_gray)
-    
-    # def processFrame(self, im_gray):
-    #     self.thisptr.processFrame(im_gray)
+
