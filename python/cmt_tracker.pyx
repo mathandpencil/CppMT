@@ -19,15 +19,14 @@ cdef extern from "opencv2/core/core.hpp" namespace "cv":
 cdef extern from "opencv2/core/core.hpp" namespace "cv":
   cdef cppclass KeyPoint:
     KeyPoint() except +
-    
-    
+
 cdef extern from "common.h" namespace "cmt":
     cdef Point2f rotate(const Point2f v, const float angle);
 
 # cdef extern from "fastcluster/fastcluster.h":
 #     cdef cppclass cluster_result:
 #         cluster_result(const t_index size)
-    
+
 cdef extern from "Consensus.h" namespace "cmt":
   cdef cppclass Consensus:
       Consensus()
@@ -67,10 +66,9 @@ cdef extern from "CMT.h" namespace "cmt":
     cdef cppclass CMT:
         CMT()
         void helloworld()
-        void processFrame(Mat im_gray)
-        #void initialize(const Mat im_gray, const Rect rect)
+        void processFrame(Mat)
+        #void initialize(Mat im_gray, Rect rect)
         
-
 cdef class PyCMT:
     cdef CMT *thisptr 
     
@@ -78,35 +76,10 @@ cdef class PyCMT:
         self.thisptr = new CMT()   
     
     def helloworld(self):
-        return self.thisptr.helloworld()
+        self.thisptr.helloworld()
     
-    # def initialize(im_gray, rect):
-    #     return self.ptr.processFrame(im_gray)
+    # def initialize(self, im_gray, rect):
+    #     self.thisptr.processFrame(im_gray)
     
-
-    def processFrame(self, im_gray):
-        return self.ptr.processFrame(im_gray)
-
-# cdef extern from "Rectangle.h" namespace "shapes":
-#     cdef cppclass Rectangle:
-#         Rectangle(int, int, int, int)
-#         int x0, y0, x1, y1
-#         int getLength()
-#         int getHeight()
-#         int getArea()
-#         void move(int, int)
-#
-# cdef class PyRectangle:
-#     cdef Rectangle *thisptr      # hold a C++ instance which we're wrapping
-#     def __cinit__(self, int x0, int y0, int x1, int y1):
-#         self.thisptr = new Rectangle(x0, y0, x1, y1)
-#     def __dealloc__(self):
-#         del self.thisptr
-#     def getLength(self):
-#         return self.thisptr.getLength()
-#     def getHeight(self):
-#         return self.thisptr.getHeight()
-#     def getArea(self):
-#         return self.thisptr.getArea()
-#     def move(self, dx, dy):
-#         self.thisptr.move(dx, dy)
+    # def processFrame(self, im_gray):
+    #     self.thisptr.processFrame(im_gray)
